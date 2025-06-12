@@ -21,7 +21,7 @@ func main() {
   ctx := context.Background()
   exporter, err := otlptracehttp.New(ctx,
     otlptracehttp.WithEndpoint("YOUR_COLLECTOR:4318"), // if using ingress, you might not need the port
-    otlptracehttp.WithURLPath("/v1/traces"), // use your own path
+    otlptracehttp.WithURLPath("/v1/traces"), // this is the default path, use your own path if your collector is expecting smth different
     otlptracehttp.WithInsecure(), // remove if using TLS
   )
   if err != nil {
@@ -69,7 +69,7 @@ func preCheck(ctx context.Context, tracer trace.Tracer) error {
 }
 
 func doWork(ctx context.Context, tracer trace.Tracer) error {
-  ctx, span := tracer.Start(ctx, "doWork",
+  ctx, span := tracer.Start(ctx, "doMagic",
     trace.WithAttributes(attribute.String("operation", "db+api")))
   defer span.End()
   span.AddEvent("start work sequence")
@@ -84,7 +84,7 @@ func doWork(ctx context.Context, tracer trace.Tracer) error {
   if err := callExternalAPI(ctx, tracer); err != nil {
     span.RecordError(err); span.SetStatus(codes.Error, err.Error()); return err
   }
-  span.SetStatus(codes.Ok, "work ok")
+  span.SetStatus(codes.Ok, "Magic ok")
   return nil
 }
 
@@ -104,7 +104,7 @@ func databaseCall(ctx context.Context, tracer trace.Tracer) error {
       semconv.DBStatementKey.String("SELECT * FROM users WHERE id=123"),
     ))
   defer span.End()
-  span.AddEvent("sending db query")
+  span.AddEvent("sending fancy db query")
   time.Sleep(40 * time.Millisecond)
   span.AddEvent("db query returned")
   return nil
@@ -135,7 +135,7 @@ func callExternalAPI(ctx context.Context, tracer trace.Tracer) error {
   }
   span.AddEvent("reading HTTP response")
   _, _ = io.ReadAll(resp.Body)
-  span.AddEvent("response fully read")
+  span.AddEvent("response read")
   return nil
 }
 
