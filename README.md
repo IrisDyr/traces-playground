@@ -23,7 +23,7 @@ A fully self-contained Go example that produces a rich, multi-step trace and exp
     ```bash
     go mod tidy
 
-3. Add your collector url in otel-go-demo/go.sum, l:23
+3. Add your collector url in [otel-go-demo/go.sum, l:23](https://github.com/IrisDyr/traces-playground/blob/752d31295319f470e8b027af2a7924ddfa28c0d6/otel-go-demo/main.go#L23)
 
 4. Run the go app
     ```bash
