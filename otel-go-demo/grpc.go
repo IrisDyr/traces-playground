@@ -16,7 +16,6 @@ import (
   sdktrace "go.opentelemetry.io/otel/sdk/trace"
   "go.opentelemetry.io/otel/trace"
   semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
-  "google.golang.org/grpc"
 )
 
 func main() {
